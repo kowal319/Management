@@ -31,7 +31,7 @@ public class Product {
     public String getColor(){
         return color;
     }
-    private int getProductCount(){
+    public int getProductCount(){
         return productCount;
     }
     @Override
