@@ -1,6 +1,8 @@
 package entity;
 
 public class Product {
+
+    public final static String PRODUCT_SEPARATOR = "#";
     Long id;
     String productName;
     float price;
