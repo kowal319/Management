@@ -1,6 +1,8 @@
 package entity;
 
 public class User {
+
+    public final static String USER_SEPARATOR = "#";
     Long id;
     String login;
     String password;
