@@ -1,5 +1,6 @@
 package dao;
 
+import Validator.UserValidator;
 import api.UserDao;
 import entity.User;
 import entity.parser.UserParser;
@@ -11,12 +12,25 @@ import java.util.List;
 import static utils.FileUtils.clearFile;
 
 public class UserDaoImpl implements UserDao {
-    private final String fileName;
+    private static final String fileName = "users.data";
+private static UserDaoImpl instance = null;
 
 
-    public UserDaoImpl(String fileName) throws IOException {
-        this.fileName = fileName;
-        FileUtils.createNewFile(fileName);
+
+    private UserDaoImpl() throws IOException {
+        try {
+            FileUtils.createNewFile(fileName);
+        } catch (IOException e){
+            System.out.println("Error with the file path");
+            System.exit(-1);
+        }
+    }
+
+    public static UserDao getInstance() throws IOException {
+        if(instance == null){
+            instance = new UserDaoImpl();
+        }
+        return instance;
     }
 
     public void saveUser(User user) throws IOException {
@@ -26,7 +40,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     public void saveUsers(List<User> users) throws FileNotFoundException {
-        clearFile(fileName);
         PrintWriter printWriter = new PrintWriter(new FileOutputStream(fileName, true));
         for (User user : users) {
             printWriter.write(user.toString() + "\n");

@@ -3,6 +3,8 @@ package entity;
 public class Product {
 
     public final static String PRODUCT_SEPARATOR = "#";
+    public final static char PRODUCT_TYPE = 'P';
+
     Long id;
     String productName;
     float price;
@@ -24,7 +26,7 @@ public class Product {
     public String getProductName(){
         return productName;
     }
-    private float getPrice(){
+    public float getPrice(){
         return price;
     }
     public float getWeight(){
@@ -36,15 +38,11 @@ public class Product {
     public int getProductCount(){
         return productCount;
     }
+    protected String getBasicProductString(){
+        return id + PRODUCT_SEPARATOR + productName + PRODUCT_SEPARATOR + price + PRODUCT_SEPARATOR + weight + PRODUCT_SEPARATOR + color + PRODUCT_SEPARATOR + productCount;
+    }
     @Override
-    public String toString(){
-        return "Product{" +
-                "id=" + id +
-                ", productName='" + productName +'\'' +
-                ", price=" + price +
-                ", weight=" + weight +
-                ", color=" + color + '\'' +
-                ", productCount=" + productCount +
-                '}';
+    public String toString() {
+        return PRODUCT_TYPE + PRODUCT_SEPARATOR + getBasicProductString();
     }
 }

@@ -9,17 +9,25 @@ import utils.FileUtils;
 import java.io.*;
 import java.util.List;
 
-import static utils.FileUtils.clearFile;
-
 public class ProductDaoImpl implements ProductDao {
 
-    private final String fileName;
-    private final String productType;
+    private static final String fileName = "products.data";
+    private static ProductDaoImpl instance = null;
 
-    public ProductDaoImpl(String fileName, String productType) throws IOException{
-        this.fileName = fileName;
-        this.productType = productType;
-      FileUtils.createNewFile(fileName);
+    private ProductDaoImpl() throws IOException{
+        try {
+            FileUtils.createNewFile(fileName);
+        } catch (IOException e) {
+            System.out.println("Error with file path");
+            System.exit(-1);
+        }
+    }
+
+    public static ProductDaoImpl getInstance() throws IOException {
+        if(instance == null){
+            instance = new ProductDaoImpl();
+        }
+        return instance;
     }
 
     public void saveProduct(Product product) throws IOException{
@@ -29,7 +37,6 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     public void saveProducts(List<Product> products) throws FileNotFoundException{
-        clearFile(fileName);
         PrintWriter printWriter = new PrintWriter( new FileOutputStream(fileName, true));
         for(Product product : products) {
             printWriter.write(product.toString() + "\n");
@@ -39,7 +46,6 @@ public class ProductDaoImpl implements ProductDao {
 
     public void removeProductById(Long productId) throws IOException{
         List<Product> products =  getAllProducts();
-
         for (int i=0; i<products.size(); i++){
             boolean isFoundProduct = products.get(i).getId().equals(productId);
             if (isFoundProduct){
@@ -67,7 +73,7 @@ public class ProductDaoImpl implements ProductDao {
 
         String readLine = bufferedReader.readLine();
         while(readLine != null){
-            Product product = ProductParser.stringToProduct(readLine, productType);
+            Product product = ProductParser.stringToProduct(readLine);
             if(product != null){
                 products.add(product);
             }

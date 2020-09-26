@@ -1,6 +1,8 @@
 package entity;
 
 public class Cloth extends Product {
+
+    public final static char PRODUCT_TYPE = 'C';
     String size;
     String material;
 
@@ -17,9 +19,7 @@ public class Cloth extends Product {
     }
     @Override
     public String toString(){
-        return super.toString() + "Cloth{" +
-                "size=" + size + '\'' +
-                ", material='" + material + '\'' +
-                '}';
+        return PRODUCT_TYPE + PRODUCT_SEPARATOR  + getBasicProductString() + PRODUCT_SEPARATOR + size + PRODUCT_SEPARATOR + material ;
+
     }
 }
