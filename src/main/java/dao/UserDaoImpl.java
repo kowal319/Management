@@ -84,27 +84,4 @@ private static UserDaoImpl instance = null;
 
         return users;
     }
-
-    public User getUserById(Long userId) throws IOException {
-        List<User> users = getAllUsers();
-        for (User user : users) {
-            boolean isFoundUser = user.getId().equals(userId);
-            if (isFoundUser) {
-                return user;
-            }
-        }
-        return null;
-
-    }
-
-    public User getUserByUserLogin(String login) throws IOException {
-        List<User> users = getAllUsers();
-        for (User user : users) {
-            boolean isFoundUser = user.getLogin().equals(login);
-            if (isFoundUser) {
-                return user;
-            }
-        }
-        return null;
-    }
 }

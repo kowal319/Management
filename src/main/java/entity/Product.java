@@ -1,5 +1,7 @@
 package entity;
 
+import entity.enums.Color;
+
 public class Product {
 
     public final static String PRODUCT_SEPARATOR = "#";
@@ -9,10 +11,10 @@ public class Product {
     String productName;
     float price;
     float weight;
-    String color;
+    Color color;
     int productCount;
 
-    public Product(Long id, String productName, float price, float weight, String color, int productCount){
+    public Product(Long id, String productName, float price, float weight, Color color, int productCount){
         this.id = id;
         this.productName = productName;
         this.price = price;
@@ -32,7 +34,7 @@ public class Product {
     public float getWeight(){
         return weight;
     }
-    public String getColor(){
+    public Color getColor(){
         return color;
     }
     public int getProductCount(){

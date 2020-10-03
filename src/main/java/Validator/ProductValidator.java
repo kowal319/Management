@@ -36,8 +36,8 @@ public class ProductValidator {
         return true;
     }
 
-    private boolean isProductCountNegative(int productCount){ return (productCount > 0);}
-    private boolean isProductNameEmpty(String productName){ return (productName.length() > 0 );}
-    private boolean isPriceNegative(float price){ return (price > 0.0f );}
-    private boolean isWeightNegative(float weight){ return (weight > 0.0f);}
+    private boolean isProductCountNegative(int productCount){ return (productCount < 0);}
+    private boolean isProductNameEmpty(String productName){ return (productName.length() < 0 );}
+    private boolean isPriceNegative(float price){ return (price <= 0.0f );}
+    private boolean isWeightNegative(float weight){ return (weight <= 0.0f);}
 }

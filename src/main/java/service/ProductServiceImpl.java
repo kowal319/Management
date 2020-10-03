@@ -12,71 +12,113 @@ import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
 
+        private static ProductServiceImpl instance = null;
+        private ProductDao productDao = ProductDaoImpl.getInstance();
+        private ProductValidator productValidator = ProductValidator.getInstance();
 
-    private static ProductServiceImpl instance = null;
-    private ProductDao productDao = ProductDaoImpl.getInstance();
-    private ProductValidator productValidator = ProductValidator.getInstance();
-
-    private ProductServiceImpl() throws IOException {
-
-    }
-
-    public static ProductServiceImpl getInstance() throws IOException {
-        if (instance == null) {
-            instance = new ProductServiceImpl();
+        private ProductServiceImpl() throws IOException {
         }
-        return instance;
-    }
 
-    public List<Product> getAllProducts() throws IOException {
-        return productDao.getAllProducts();
-    }
+        public static ProductServiceImpl getInstance() throws IOException {
+            if (instance == null) {
+                instance = new ProductServiceImpl();
+            }
 
-    public Integer getCountProducts() throws IOException {
-        return getAllProducts().size();
-    }
+            return instance;
+        }
 
-    public Product getProductByProductName(String productName) throws IOException {
-        return productDao.getProductByProductName(productName);
-    }
+        public List<Product> getAllProducts() throws IOException {
+            return productDao.getAllProducts();
+        }
 
-    public boolean isProductOnWarehouse(String productName) {
-        try {
-            for (Product product : getAllProducts()) {
-                if (isProductExist(productName) && product.getProductCount() > 0) {
+        public Integer getCountProducts() throws IOException {
+            return getAllProducts().size();
+        }
+
+        public Product getProductByProductName(String productName) throws IOException {
+            List<Product> products = getAllProducts();
+
+            for (Product product : products
+            ) {
+                boolean isFoundProduct = product.getProductName().equals(productName);
+                if (isFoundProduct) {
+                    return product;
+                }
+
+            }
+
+            return null;
+        }
+
+        public Product getProductById(Long productId) throws IOException {
+            List<Product> products = getAllProducts();
+
+
+            for (Product product : products
+            ) {
+                boolean isFoundProduct = product.getId().equals(productId);
+                if (isFoundProduct) {
+                    return product;
+                }
+
+            }
+
+            return null;
+        }
+
+
+        public boolean isProductExist(String productName) {
+            Product product = null;
+
+            try {
+                product = getProductByProductName(productName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (product == null) return false;
+
+            return true;
+        }
+
+        public boolean isProductExist(Long productId) {
+            Product product = null;
+
+            try {
+                product = getProductById(productId);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (product == null) return false;
+
+            return true;
+        }
+
+        public boolean isProductOnWarehouse(String productName) {
+            try {
+                for (Product product : getAllProducts()) {
+                    if (isProductExist(productName) && product.getProductCount() > 0) {
+                        return true;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        public boolean saveProduct(Product product) {
+            try {
+                if (productValidator.isValidate(product)) {
+                    productDao.saveProduct(product);
                     return true;
                 }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
 
+            return false;
         }
-        return false;
+
     }
-
-    public boolean isProductExist(String productName) {
-        Product product = null;
-        try {
-            product = productDao.getProductByProductName(productName);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (product == null) return false;
-        return true;
-    }
-
-    public boolean isProductExist(Long productId) {
-        Product product = null;
-        try {
-            product = productDao.getProductById(productId);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (product == null) return false;
-        return true;
-    }
-}
-
-
-

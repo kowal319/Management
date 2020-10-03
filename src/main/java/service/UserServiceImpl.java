@@ -84,7 +84,7 @@ public User getUserById(Long userId) throws IOException{
 return null;
     }
 
-    public boolean isCorrectLoginAndPassword(String login, String password) {
+    public boolean isCorrectLoginAndPassword(String login, String password) throws IOException {
         User foundUser = getUserByLogin(login);
 
         if (foundUser == null) {
